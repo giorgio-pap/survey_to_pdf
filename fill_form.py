@@ -10,15 +10,21 @@ Created on Tue May 19 09:54:42 2020
 
 import pandas as pd
 import pdfrw
+from pdfrw import PdfReader, PdfWriter
 from datetime import datetime
 import os
 import sys
+
+timestr = datetime.now().strftime("%d%m%Y") #day, month, year, hour, minutes, seconds, milliseconds
+timestr_c = datetime.now().strftime("%d%m%Y_%H%M%S")
+
 
 if len(sys.argv)==1:
     print('USAGE:  fill_form.py csv_path')
     print('   e.g. fill_form.py "/home/username/mystudy/payment/results_survey.csv"')
     print('Code assumes that the folder containing fill_form.py also contains the unmodified template KostenerstattungOnline.pdf.')
     sys.exit()
+
 
 folder_template = os.path.dirname(os.path.realpath(__file__))
 invoice_path = sys.argv[1]
@@ -43,7 +49,8 @@ def splitDataFrameIntoSmaller(df, chunkSize = 4):
 df_list = splitDataFrameIntoSmaller(df_total)
 
 #create a folder for the invoices if it does not exist
-output_folder = folder_invoice + "/invoice/"
+output_folder = folder_invoice + "invoice_" + timestr_c + "/"
+
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
 
@@ -53,7 +60,7 @@ for x in df_list:
     #read one df at the time
     df = pd.DataFrame(x)
     d={}
-    INVOICE_OUTPUT_PATH = folder_invoice + "/invoice/invoice"
+    INVOICE_OUTPUT_PATH = folder_invoice + "invoice_" + timestr_c + "/" + "invoice"
     INVOICE_TEMPLATE_PATH = folder_template + "/KostenerstattungONLINE.pdf"
 
 
@@ -258,7 +265,32 @@ for x in df_list:
            "date1" : d["date_0"],
         }
 
-    timestr = datetime.now().strftime("%d%m%Y_%I%M%S") #day, month, year, hour, minutes, seconds
+     
     if __name__ == '__main__':
-        write_fillable_pdf(INVOICE_TEMPLATE_PATH, INVOICE_OUTPUT_PATH + str(a) + "_"+ timestr + ".pdf", data_dict)
-        print("Written: " + INVOICE_OUTPUT_PATH + str(a) + "_"+ timestr + ".pdf")
+        write_fillable_pdf(INVOICE_TEMPLATE_PATH, INVOICE_OUTPUT_PATH + str(a) + "_"+ timestr + ".pdf", data_dict)    
+
+#this creates a concatenated file of all pdf files
+def concatenate(paths, output):
+    writer = PdfWriter()
+    
+    for path_x in paths:
+        reader = PdfReader(path_x)
+        writer.addpages(reader.pages)
+        
+    writer.write(output)
+    
+
+paths = []
+
+if __name__ == '__main__':
+    for y in range(1,a+1):
+            path_x = INVOICE_OUTPUT_PATH+ str(y) + "_" + timestr + ".pdf"
+            paths.append(path_x)
+
+            
+conc_file = output_folder + "/conc_inv" + timestr_c + ".pdf"
+concatenate(paths, conc_file)
+
+#this will remove the single pdf files leaving only the concatenated one
+for path_x in paths:
+        os.remove(path_x)

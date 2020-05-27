@@ -9,22 +9,20 @@ Created on Tue May 19 09:54:42 2020
 # "pip install pdfrw" should do the job.
 
 
-#### to change ###
-#to make the script work, you need to change  the input/output locations, i.e.:
-#df_total = the name of your csv file
-#folder_invoice = where  your template is [the output of the script will be 
-#in a subfolder of folder_invoice called "invoice"]
-
 
 import pandas as pd
 import pdfrw
+from pdfrw import PdfReader, PdfWriter
 from datetime import datetime
 import os
 
-folder_invoice = "/Users/giorgio/Downloads/"
+timestr = datetime.now().strftime("%d%m%Y") #day, month, year
+timestr_c = datetime.now().strftime("%d%m%Y_%M%S")#day, month, year, hour, minutes, second
+
+folder_invoice = "/Users/andrea/Downloads/mpi_pdf/"
 
 #read the csv of the questionnaries
-df_total = pd.read_csv(folder_invoice + "results-survey996649-6.csv")
+df_total = pd.read_csv(folder_invoice + "results.csv")
 #missing information, will be marked by "/"
 df_total.fillna("/", inplace=True)
 
@@ -42,7 +40,7 @@ def splitDataFrameIntoSmaller(df, chunkSize = 4):
 df_list = splitDataFrameIntoSmaller(df_total)
 
 #create a folder for the invoices if it does not exist
-output_folder = folder_invoice + "invoice/"
+output_folder = folder_invoice + "invoice_" + timestr_c + "/"
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
 
@@ -52,8 +50,8 @@ for x in df_list:
     #read one df at the time
     df = pd.DataFrame(x) 
     d={}
-    INVOICE_OUTPUT_PATH = folder_invoice + "invoice/invoice"
-    INVOICE_TEMPLATE_PATH = folder_invoice + "KostenerstattungONLINE4-2_3.pdf"
+    INVOICE_OUTPUT_PATH = folder_invoice + "invoice_" + timestr_c + "/" + "invoice"
+    INVOICE_TEMPLATE_PATH = folder_invoice + "KostenerstattungONLINE.pdf"
     
     
     for i in range(0, len(df)):
@@ -257,6 +255,31 @@ for x in df_list:
            "date1" : d["date_0"],    
         }  
      
-    timestr = datetime.now().strftime("%d%m%Y_%I%M%S%f") #day, month, year, hour, minutes, seconds, milliseconds
     if __name__ == '__main__':
         write_fillable_pdf(INVOICE_TEMPLATE_PATH, INVOICE_OUTPUT_PATH + str(a) + "_"+ timestr + ".pdf", data_dict)    
+
+#this creates a concatenated file of all pdf files
+def concatenate(paths, output):
+    writer = PdfWriter()
+    
+    for path in paths:
+        reader = PdfReader(path)
+        writer.addpages(reader.pages)
+        
+    writer.write(output)
+    
+
+paths = []
+
+if __name__ == '__main__':
+    for y in range(1,a+1):
+            path = INVOICE_OUTPUT_PATH+ str(y) + "_" + timestr + ".pdf"
+            paths.append(path)
+
+            
+conc_file = "/Users/andrea/Downloads/mpi_pdf/invoice_" + timestr_c + "/concatenated_invoices" + timestr_c + ".pdf"
+concatenate(paths, conc_file)
+
+#this will remove the single pdf files leaving only the concatenated one
+for path in paths:
+        os.remove(path)
