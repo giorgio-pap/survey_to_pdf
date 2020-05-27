@@ -6,7 +6,7 @@ Created on Tue May 19 09:54:42 2020
 @author: giorgo
 """
 # you need to install pdfrw first.
-# "pip install pdfrw" should do the job.
+# "pip3 install pdfrw" should do the job.
 
 import pandas as pd
 import pdfrw
