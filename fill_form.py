@@ -25,15 +25,31 @@ if len(sys.argv)==1:
     print('Code assumes that the folder containing fill_form.py also contains the unmodified template KostenerstattungOnline.pdf.')
     sys.exit()
 
-
 folder_template = os.path.dirname(os.path.realpath(__file__))
 invoice_path = sys.argv[1]
 folder_invoice = os.path.dirname(invoice_path)
+
 
 #read the csv of the questionnaries
 df_total = pd.read_csv(invoice_path)
 #missing information, will be marked by "/"
 df_total.fillna("/", inplace=True)
+
+duplicateRowsDF_name = df_total[df_total.duplicated(['A[name]'])]
+duplicateRowsDF_IBAN = df_total[df_total.duplicated(['A[IBAN]'])]
+
+if not duplicateRowsDF_name.empty:
+    print("\n\nWARNING!!!\n\nThere are duplicates in your input file! " + 
+          "Please check that everything is correct.\n" +
+          "In your output folder you can find csv files reporting duplicates" +
+          " based on names and/or IBAN.\n")
+
+if not duplicateRowsDF_IBAN.empty:
+     print("\n\nWARNING!!!\n\nThere are duplicates in your input file! " + 
+          "Please check that everything is correct.\n" +
+          "In your output folder you can find csv files reporting duplicates" +
+          " based on names and/or IBAN.\n")
+
 
 
 #define function for splitting the dataframe into multiple dataframes
@@ -50,6 +66,8 @@ df_list = splitDataFrameIntoSmaller(df_total)
 
 #create a folder for the invoices if it does not exist
 output_folder = folder_invoice + "invoice_" + timestr_c + "/"
+
+
 
 if not os.path.exists(output_folder):
     os.makedirs(output_folder)
@@ -268,6 +286,14 @@ for x in df_list:
      
     if __name__ == '__main__':
         write_fillable_pdf(INVOICE_TEMPLATE_PATH, INVOICE_OUTPUT_PATH + str(a) + "_"+ timestr + ".pdf", data_dict)    
+
+if not duplicateRowsDF_name.empty:
+    duplicateRowsDF_name= duplicateRowsDF_name.sort_values('A[name]')
+    duplicateRowsDF_name.to_csv(output_folder + "name.csv", index = False)
+
+if not duplicateRowsDF_IBAN.empty:  
+    duplicateRowsDF_IBAN = duplicateRowsDF_IBAN.sort_values('A[IBAN]')
+    duplicateRowsDF_IBAN.to_csv(output_folder + "IBAN.csv", index = False)
 
 #this creates a concatenated file of all pdf files
 def concatenate(paths, output):
