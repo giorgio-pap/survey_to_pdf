@@ -79,7 +79,7 @@ for x in df_list:
     df = pd.DataFrame(x)
     d={}
     INVOICE_OUTPUT_PATH = folder_invoice + "invoice_" + timestr_c + "/" + "invoice"
-    INVOICE_TEMPLATE_PATH = folder_template + "/KostenerstattungONLINE.pdf"
+    INVOICE_TEMPLATE_PATH = folder_template + "/KostenerstattungOnline.pdf"
 
 
     for i in range(0, len(df)):
