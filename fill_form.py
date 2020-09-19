@@ -303,20 +303,29 @@ def concatenate(paths, output):
         reader = PdfReader(path_x)
         writer.addpages(reader.pages)
         
-    writer.write(output)
-    
+    writer.write(output)  
 
 paths = []
+len_df_total = len(df_total)
 
-if __name__ == '__main__':
+if (__name__ == '__main__') and (len_df_total % 4 == 0):
+    for y in range(1,a):
+            path_x = INVOICE_OUTPUT_PATH+ str(y) + "_" + timestr + ".pdf"
+            paths.append(path_x)
+elif (__name__ == '__main__') and (len_df_total % 4 != 0):
     for y in range(1,a+1):
             path_x = INVOICE_OUTPUT_PATH+ str(y) + "_" + timestr + ".pdf"
             paths.append(path_x)
-
             
 conc_file = output_folder + "/conc_inv" + timestr_c + ".pdf"
 concatenate(paths, conc_file)
 
 #this will remove the single pdf files leaving only the concatenated one
-for path_x in paths:
-        os.remove(path_x)
+if (len_df_total % 4 != 0):
+    for path_x in paths:
+            os.remove(path_x)
+elif (len_df_total % 4 == 0):
+    for path_x in paths:
+            os.remove(path_x)
+    y = y+1
+    os.remove(INVOICE_OUTPUT_PATH+ str(y) + "_" + timestr + ".pdf")
