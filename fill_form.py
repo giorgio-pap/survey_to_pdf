@@ -8,6 +8,7 @@ Created on Tue May 19 09:54:42 2020
 # you need to install pdfrw first.
 # "pip3 install pdfrw" should do the job.
 
+
 import pandas as pd
 import pdfrw
 from pdfrw import PdfReader, PdfWriter
@@ -60,6 +61,8 @@ if not duplicateRowsDF_IBAN.empty:
           "Please check that everything is correct.\n" +
           "In your output folder you can find csv files reporting duplicates" +
           " based on names and/or IBAN.\n")
+
+
 
 #define function for splitting the dataframe into multiple dataframes
 #having maximum 4 rows each
@@ -157,142 +160,127 @@ for x in df_list:
            'name1': d["name_0"],
            "address1" : d["address_0"],
            "amount1" : d["EUR_0"],
-
-           "iban1_part1" :  d["IBAN0_1"] + "–",
-           "iban1_part2" :  d["IBAN0_2"] + "–",
-           "iban1_part3" :  d["IBAN0_3"] + "–",
-           "iban1_part4" :  d["IBAN0_4"] + "–",
-           "iban1_part5" :  d["IBAN0_5"] + "–",
+           "iban1_part1" :  d["IBAN0_1"],
+           "iban1_part2" :  d["IBAN0_2"],
+           "iban1_part3" :  d["IBAN0_3"],
+           "iban1_part4" :  d["IBAN0_4"],
+           "iban1_part5" :  d["IBAN0_5"],
            "iban1_part6" :  d["IBAN0_6"],
            "description1" : d["description_0"],
            "date1" : d["date_0"],
-
            "name2": d["name_1"],
            "address2" : d["address_1"],
            "amount2" : d["EUR_1"],
-           "iban2_part1" :  d["IBAN1_1"] + "–",
-           "iban2_part2" :  d["IBAN1_2"] + "–",
-           "iban2_part3" :  d["IBAN1_3"] + "–",
-           "iban2_part4" :  d["IBAN1_4"] + "–",
-           "iban2_part5" :  d["IBAN1_5"] + "–",
+           "iban2_part1" :  d["IBAN1_1"],
+           "iban2_part2" :  d["IBAN1_2"],
+           "iban2_part3" :  d["IBAN1_3"],
+           "iban2_part4" :  d["IBAN1_4"],
+           "iban2_part5" :  d["IBAN1_5"],
            "iban2_part6" :  d["IBAN1_6"],
            "description2" : d["description_1"],
            "date2" : d["date_1"],
-
            'name3': d["name_2"],
            "address3" : d["address_2"],
            "amount3" : d["EUR_2"],
-           "iban3_part1" :  d["IBAN2_1"] + "–",
-           "iban3_part2" :  d["IBAN2_2"] + "–",
-           "iban3_part3" :  d["IBAN2_3"] + "–",
-           "iban3_part4" :  d["IBAN2_4"] + "–",
-           "iban3_part5" :  d["IBAN2_5"] + "–",
+           "iban3_part1" :  d["IBAN2_1"],
+           "iban3_part2" :  d["IBAN2_2"],
+           "iban3_part3" :  d["IBAN2_3"],
+           "iban3_part4" :  d["IBAN2_4"],
+           "iban3_part5" :  d["IBAN2_5"],
            "iban3_part6" :  d["IBAN2_6"],
            "description3" : d["description_2"],
            "date3" : d["date_2"],
-
            "name4": d["name_3"],
            "address4" : d["address_3"],
            "amount4" : d["EUR_3"],
-           "iban4_part1" :  d["IBAN3_1"] + "–",
-           "iban4_part2" :  d["IBAN3_2"] + "–",
-           "iban4_part3" :  d["IBAN3_3"] + "–",
-           "iban4_part4" :  d["IBAN3_4"] + "–",
-           "iban4_part5" :  d["IBAN3_5"] + "–",
+           "iban4_part1" :  d["IBAN3_1"],
+           "iban4_part2" :  d["IBAN3_2"],
+           "iban4_part3" :  d["IBAN3_3"],
+           "iban4_part4" :  d["IBAN3_4"],
+           "iban4_part5" :  d["IBAN3_5"],
            "iban4_part6" :  d["IBAN3_6"],
            "description4" : d["description_3"],
            "date4" : d["date_3"],
-
         }
-            
-
     #if there are still 3 subject to be inserted
     elif len(df) == 3:
         data_dict = {
            'name1': d["name_0"],
            "address1" : d["address_0"],
            "amount1" : d["EUR_0"],
-
-           "iban1_part1" :  d["IBAN0_1"] + "–",
-           "iban1_part2" :  d["IBAN0_2"] + "–",
-           "iban1_part3" :  d["IBAN0_3"] + "–",
-           "iban1_part4" :  d["IBAN0_4"] + "–",
-           "iban1_part5" :  d["IBAN0_5"] + "–",
+           "iban1_part1" :  d["IBAN0_1"],
+           "iban1_part2" :  d["IBAN0_2"],
+           "iban1_part3" :  d["IBAN0_3"],
+           "iban1_part4" :  d["IBAN0_4"],
+           "iban1_part5" :  d["IBAN0_5"],
            "iban1_part6" :  d["IBAN0_6"],
            "description1" : d["description_0"],
            "date1" : d["date_0"],
-
            "name2": d["name_1"],
            "address2" : d["address_1"],
            "amount2" : d["EUR_1"],
-           "iban2_part1" :  d["IBAN1_1"] + "–",
-           "iban2_part2" :  d["IBAN1_2"] + "–",
-           "iban2_part3" :  d["IBAN1_3"] + "–",
-           "iban2_part4" :  d["IBAN1_4"] + "–",
-           "iban2_part5" :  d["IBAN1_5"] + "–",
+           "iban2_part1" :  d["IBAN1_1"],
+           "iban2_part2" :  d["IBAN1_2"],
+           "iban2_part3" :  d["IBAN1_3"],
+           "iban2_part4" :  d["IBAN1_4"],
+           "iban2_part5" :  d["IBAN1_5"],
            "iban2_part6" :  d["IBAN1_6"],
            "description2" : d["description_1"],
            "date2" : d["date_1"],
-
            'name3': d["name_2"],
            "address3" : d["address_2"],
            "amount3" : d["EUR_2"],
-           "iban3_part1" :  d["IBAN2_1"] + "–",
-           "iban3_part2" :  d["IBAN2_2"] + "–",
-           "iban3_part3" :  d["IBAN2_3"] + "–",
-           "iban3_part4" :  d["IBAN2_4"] + "–",
-           "iban3_part5" :  d["IBAN2_5"] + "–",
+           "iban3_part1" :  d["IBAN2_1"],
+           "iban3_part2" :  d["IBAN2_2"],
+           "iban3_part3" :  d["IBAN2_3"],
+           "iban3_part4" :  d["IBAN2_4"],
+           "iban3_part5" :  d["IBAN2_5"],
            "iban3_part6" :  d["IBAN2_6"],
            "description3" : d["description_2"],
            "date3" : d["date_2"],
         }
-
     #if there are still 2 subject to be inserted
     elif len(df) == 2:
         data_dict = {
            'name1': d["name_0"],
            "address1" : d["address_0"],
            "amount1" : d["EUR_0"],
-
-           "iban1_part1" :  d["IBAN0_1"] + "–",
-           "iban1_part2" :  d["IBAN0_2"] + "–",
-           "iban1_part3" :  d["IBAN0_3"] + "–",
-           "iban1_part4" :  d["IBAN0_4"] + "–",
-           "iban1_part5" :  d["IBAN0_5"] + "–",
+           "iban1_part1" :  d["IBAN0_1"],
+           "iban1_part2" :  d["IBAN0_2"],
+           "iban1_part3" :  d["IBAN0_3"],
+           "iban1_part4" :  d["IBAN0_4"],
+           "iban1_part5" :  d["IBAN0_5"],
            "iban1_part6" :  d["IBAN0_6"],
            "description1" : d["description_0"],
            "date1" : d["date_0"],
-
            "name2": d["name_1"],
            "address2" : d["address_1"],
            "amount2" : d["EUR_1"],
-           "iban2_part1" :  d["IBAN1_1"] + "–",
-           "iban2_part2" :  d["IBAN1_2"] + "–",
-           "iban2_part3" :  d["IBAN1_3"] + "–",
-           "iban2_part4" :  d["IBAN1_4"] + "–",
-           "iban2_part5" :  d["IBAN1_5"] + "–",
+           "iban2_part1" :  d["IBAN1_1"],
+           "iban2_part2" :  d["IBAN1_2"],
+           "iban2_part3" :  d["IBAN1_3"],
+           "iban2_part4" :  d["IBAN1_4"],
+           "iban2_part5" :  d["IBAN1_5"],
            "iban2_part6" :  d["IBAN1_6"],
            "description2" : d["description_1"],
            "date2" : d["date_1"],
         }
-
     #if there is still 1 subject to be inserted
     elif len(df) == 1:
         data_dict = {
            'name1': d["name_0"],
            "address1" : d["address_0"],
            "amount1" : d["EUR_0"],
-
-           "iban1_part1" :  d["IBAN0_1"] + "–",
-           "iban1_part2" :  d["IBAN0_2"] + "–",
-           "iban1_part3" :  d["IBAN0_3"] + "–",
-           "iban1_part4" :  d["IBAN0_4"] + "–",
-           "iban1_part5" :  d["IBAN0_5"] + "–",
+           "iban1_part1" :  d["IBAN0_1"],
+           "iban1_part2" :  d["IBAN0_2"],
+           "iban1_part3" :  d["IBAN0_3"],
+           "iban1_part4" :  d["IBAN0_4"],
+           "iban1_part5" :  d["IBAN0_5"],
            "iban1_part6" :  d["IBAN0_6"],
            "description1" : d["description_0"],
            "date1" : d["date_0"],
         }
-
+     
      
     if __name__ == '__main__':
         write_fillable_pdf(INVOICE_TEMPLATE_PATH, INVOICE_OUTPUT_PATH + str(a) + "_"+ timestr + ".pdf", data_dict)    
