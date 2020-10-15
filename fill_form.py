@@ -32,8 +32,19 @@ folder_invoice = os.path.dirname(invoice_path)
 
 #read the csv of the questionnaries
 df_total = pd.read_csv(invoice_path)
-#missing information, will be marked by "/"
-df_total.fillna("/", inplace=True)
+df_total_2 = df_total
+
+df_total["A[IBAN]"] = df_total["IBAN[IBANC_SQ001]"].astype(str) + df_total["IBAN[IBANC_SQ002]"].astype(str) + df_total["IBAN[IBANC_SQ003]"].astype(str) + df_total["IBAN[IBANC_SQ004]"].astype(str) + df_total["IBAN[IBANC_SQ005]"].astype(str)  + df_total["IBAN[IBANC_SQ006]"].astype(str)
+
+
+if df_total['A[address]'].isnull().any():
+    print("\n\nWARNING!!!\n\nThere are missing addresses in your input file!\n" + 
+          "It will not be possible to process the payment unless all addresses are provided.\n" +
+          "In your output folder you can find a csv file reporting participants for whom no address was provided." 
+          + "\n\n----------------------")
+    df_total.fillna("/", inplace=True)
+    idx = df_total.apply(lambda ts: any(ts == '/'), axis=1)
+    
 
 duplicateRowsDF_name = df_total[df_total.duplicated(['A[name]'])]
 duplicateRowsDF_IBAN = df_total[df_total.duplicated(['A[IBAN]'])]
@@ -49,8 +60,6 @@ if not duplicateRowsDF_IBAN.empty:
           "Please check that everything is correct.\n" +
           "In your output folder you can find csv files reporting duplicates" +
           " based on names and/or IBAN.\n")
-
-
 
 #define function for splitting the dataframe into multiple dataframes
 #having maximum 4 rows each
@@ -149,11 +158,11 @@ for x in df_list:
            "address1" : d["address_0"],
            "amount1" : d["EUR_0"],
 
-           "iban1_part1" :  d["IBAN0_1"],
-           "iban1_part2" :  d["IBAN0_2"],
-           "iban1_part3" :  d["IBAN0_3"],
-           "iban1_part4" :  d["IBAN0_4"],
-           "iban1_part5" :  d["IBAN0_5"],
+           "iban1_part1" :  d["IBAN0_1"] + "–",
+           "iban1_part2" :  d["IBAN0_2"] + "–",
+           "iban1_part3" :  d["IBAN0_3"] + "–",
+           "iban1_part4" :  d["IBAN0_4"] + "–",
+           "iban1_part5" :  d["IBAN0_5"] + "–",
            "iban1_part6" :  d["IBAN0_6"],
            "description1" : d["description_0"],
            "date1" : d["date_0"],
@@ -161,11 +170,11 @@ for x in df_list:
            "name2": d["name_1"],
            "address2" : d["address_1"],
            "amount2" : d["EUR_1"],
-           "iban2_part1" :  d["IBAN1_1"],
-           "iban2_part2" :  d["IBAN1_2"],
-           "iban2_part3" :  d["IBAN1_3"],
-           "iban2_part4" :  d["IBAN1_4"],
-           "iban2_part5" :  d["IBAN1_5"],
+           "iban2_part1" :  d["IBAN1_1"] + "–",
+           "iban2_part2" :  d["IBAN1_2"] + "–",
+           "iban2_part3" :  d["IBAN1_3"] + "–",
+           "iban2_part4" :  d["IBAN1_4"] + "–",
+           "iban2_part5" :  d["IBAN1_5"] + "–",
            "iban2_part6" :  d["IBAN1_6"],
            "description2" : d["description_1"],
            "date2" : d["date_1"],
@@ -173,11 +182,11 @@ for x in df_list:
            'name3': d["name_2"],
            "address3" : d["address_2"],
            "amount3" : d["EUR_2"],
-           "iban3_part1" :  d["IBAN2_1"],
-           "iban3_part2" :  d["IBAN2_2"],
-           "iban3_part3" :  d["IBAN2_3"],
-           "iban3_part4" :  d["IBAN2_4"],
-           "iban3_part5" :  d["IBAN2_5"],
+           "iban3_part1" :  d["IBAN2_1"] + "–",
+           "iban3_part2" :  d["IBAN2_2"] + "–",
+           "iban3_part3" :  d["IBAN2_3"] + "–",
+           "iban3_part4" :  d["IBAN2_4"] + "–",
+           "iban3_part5" :  d["IBAN2_5"] + "–",
            "iban3_part6" :  d["IBAN2_6"],
            "description3" : d["description_2"],
            "date3" : d["date_2"],
@@ -185,16 +194,17 @@ for x in df_list:
            "name4": d["name_3"],
            "address4" : d["address_3"],
            "amount4" : d["EUR_3"],
-           "iban4_part1" :  d["IBAN3_1"],
-           "iban4_part2" :  d["IBAN3_2"],
-           "iban4_part3" :  d["IBAN3_3"],
-           "iban4_part4" :  d["IBAN3_4"],
-           "iban4_part5" :  d["IBAN3_5"],
+           "iban4_part1" :  d["IBAN3_1"] + "–",
+           "iban4_part2" :  d["IBAN3_2"] + "–",
+           "iban4_part3" :  d["IBAN3_3"] + "–",
+           "iban4_part4" :  d["IBAN3_4"] + "–",
+           "iban4_part5" :  d["IBAN3_5"] + "–",
            "iban4_part6" :  d["IBAN3_6"],
            "description4" : d["description_3"],
            "date4" : d["date_3"],
 
         }
+            
 
     #if there are still 3 subject to be inserted
     elif len(df) == 3:
@@ -203,11 +213,11 @@ for x in df_list:
            "address1" : d["address_0"],
            "amount1" : d["EUR_0"],
 
-           "iban1_part1" :  d["IBAN0_1"],
-           "iban1_part2" :  d["IBAN0_2"],
-           "iban1_part3" :  d["IBAN0_3"],
-           "iban1_part4" :  d["IBAN0_4"],
-           "iban1_part5" :  d["IBAN0_5"],
+           "iban1_part1" :  d["IBAN0_1"] + "–",
+           "iban1_part2" :  d["IBAN0_2"] + "–",
+           "iban1_part3" :  d["IBAN0_3"] + "–",
+           "iban1_part4" :  d["IBAN0_4"] + "–",
+           "iban1_part5" :  d["IBAN0_5"] + "–",
            "iban1_part6" :  d["IBAN0_6"],
            "description1" : d["description_0"],
            "date1" : d["date_0"],
@@ -215,11 +225,11 @@ for x in df_list:
            "name2": d["name_1"],
            "address2" : d["address_1"],
            "amount2" : d["EUR_1"],
-           "iban2_part1" :  d["IBAN1_1"],
-           "iban2_part2" :  d["IBAN1_2"],
-           "iban2_part3" :  d["IBAN1_3"],
-           "iban2_part4" :  d["IBAN1_4"],
-           "iban2_part5" :  d["IBAN1_5"],
+           "iban2_part1" :  d["IBAN1_1"] + "–",
+           "iban2_part2" :  d["IBAN1_2"] + "–",
+           "iban2_part3" :  d["IBAN1_3"] + "–",
+           "iban2_part4" :  d["IBAN1_4"] + "–",
+           "iban2_part5" :  d["IBAN1_5"] + "–",
            "iban2_part6" :  d["IBAN1_6"],
            "description2" : d["description_1"],
            "date2" : d["date_1"],
@@ -227,11 +237,11 @@ for x in df_list:
            'name3': d["name_2"],
            "address3" : d["address_2"],
            "amount3" : d["EUR_2"],
-           "iban3_part1" :  d["IBAN2_1"],
-           "iban3_part2" :  d["IBAN2_2"],
-           "iban3_part3" :  d["IBAN2_3"],
-           "iban3_part4" :  d["IBAN2_4"],
-           "iban3_part5" :  d["IBAN2_5"],
+           "iban3_part1" :  d["IBAN2_1"] + "–",
+           "iban3_part2" :  d["IBAN2_2"] + "–",
+           "iban3_part3" :  d["IBAN2_3"] + "–",
+           "iban3_part4" :  d["IBAN2_4"] + "–",
+           "iban3_part5" :  d["IBAN2_5"] + "–",
            "iban3_part6" :  d["IBAN2_6"],
            "description3" : d["description_2"],
            "date3" : d["date_2"],
@@ -244,11 +254,11 @@ for x in df_list:
            "address1" : d["address_0"],
            "amount1" : d["EUR_0"],
 
-           "iban1_part1" :  d["IBAN0_1"],
-           "iban1_part2" :  d["IBAN0_2"],
-           "iban1_part3" :  d["IBAN0_3"],
-           "iban1_part4" :  d["IBAN0_4"],
-           "iban1_part5" :  d["IBAN0_5"],
+           "iban1_part1" :  d["IBAN0_1"] + "–",
+           "iban1_part2" :  d["IBAN0_2"] + "–",
+           "iban1_part3" :  d["IBAN0_3"] + "–",
+           "iban1_part4" :  d["IBAN0_4"] + "–",
+           "iban1_part5" :  d["IBAN0_5"] + "–",
            "iban1_part6" :  d["IBAN0_6"],
            "description1" : d["description_0"],
            "date1" : d["date_0"],
@@ -256,11 +266,11 @@ for x in df_list:
            "name2": d["name_1"],
            "address2" : d["address_1"],
            "amount2" : d["EUR_1"],
-           "iban2_part1" :  d["IBAN1_1"],
-           "iban2_part2" :  d["IBAN1_2"],
-           "iban2_part3" :  d["IBAN1_3"],
-           "iban2_part4" :  d["IBAN1_4"],
-           "iban2_part5" :  d["IBAN1_5"],
+           "iban2_part1" :  d["IBAN1_1"] + "–",
+           "iban2_part2" :  d["IBAN1_2"] + "–",
+           "iban2_part3" :  d["IBAN1_3"] + "–",
+           "iban2_part4" :  d["IBAN1_4"] + "–",
+           "iban2_part5" :  d["IBAN1_5"] + "–",
            "iban2_part6" :  d["IBAN1_6"],
            "description2" : d["description_1"],
            "date2" : d["date_1"],
@@ -273,11 +283,11 @@ for x in df_list:
            "address1" : d["address_0"],
            "amount1" : d["EUR_0"],
 
-           "iban1_part1" :  d["IBAN0_1"],
-           "iban1_part2" :  d["IBAN0_2"],
-           "iban1_part3" :  d["IBAN0_3"],
-           "iban1_part4" :  d["IBAN0_4"],
-           "iban1_part5" :  d["IBAN0_5"],
+           "iban1_part1" :  d["IBAN0_1"] + "–",
+           "iban1_part2" :  d["IBAN0_2"] + "–",
+           "iban1_part3" :  d["IBAN0_3"] + "–",
+           "iban1_part4" :  d["IBAN0_4"] + "–",
+           "iban1_part5" :  d["IBAN0_5"] + "–",
            "iban1_part6" :  d["IBAN0_6"],
            "description1" : d["description_0"],
            "date1" : d["date_0"],
@@ -295,7 +305,11 @@ if not duplicateRowsDF_IBAN.empty:
     duplicateRowsDF_IBAN = duplicateRowsDF_IBAN.sort_values('A[IBAN]')
     duplicateRowsDF_IBAN.to_csv(output_folder + "IBAN.csv", index = False)
 
-#this creates a concatenated file of all pdf files
+if df_total_2['A[address]'].isnull().any():
+    df_total[idx].to_csv(output_folder + "no_address.csv", index = False)
+
+#this creates a concatenated file of all pdf filesif df_total['A[address]'].isnull().any():
+
 def concatenate(paths, output):
     writer = PdfWriter()
     
