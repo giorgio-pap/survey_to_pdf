@@ -32,7 +32,7 @@ folder_invoice = os.path.dirname(invoice_path)
 
 
 #read the csv of the questionnaries
-df_total = pd.read_csv(invoice_path)
+df_total = pd.read_csv(invoice_path, dtype = str)
 df_total_2 = df_total
 
 df_total["A[IBAN]"] = df_total["IBAN[IBANC_SQ001]"].astype(str) + df_total["IBAN[IBANC_SQ002]"].astype(str) + df_total["IBAN[IBANC_SQ003]"].astype(str) + df_total["IBAN[IBANC_SQ004]"].astype(str) + df_total["IBAN[IBANC_SQ005]"].astype(str)  + df_total["IBAN[IBANC_SQ006]"].astype(str)
