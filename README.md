@@ -1,4 +1,4 @@
-# pdf_mpi_survey
+# pdf_survey
 A script that reads in the template pdf and fills it in with data from the survey responses
 
 To make it work:
